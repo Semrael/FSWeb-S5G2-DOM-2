@@ -58,12 +58,31 @@ window.addEventListener("resize", () => {
   }
 });
 
+//keypress kullanıldı 1 rakamı kullanıldığında inputun border rengini sarıya çeviriyor
+//key ve code(digit1 gibi) kullanılabilir .
 input.addEventListener("keypress", (s) => {
   // console.log(s.key);
   // console.log(s.code);
   if (s.key == 1) {
     input.style.border = "10px solid yellow";
   }
+});
+
+//drag and drop 3 tane fonksiyon yazmamız gerekiyor
+const img2 = document.getElementById("img2");
+img2.addEventListener("dragstart", (ev) => {
+  ev.dataTransfer.setData("text", ev.target.id);
+});
+
+const img1 = document.getElementById("img1");
+img1.addEventListener("drop", (ev) => {
+  let data = ev.dataTransfer.getData("Text");
+  ev.target.src = document.getElementById(data).src;
+  ev.preventDefault();
+});
+
+img1.addEventListener("dragover", (ev) => {
+  ev.preventDefault();
 });
 
 // h1 için
@@ -80,5 +99,3 @@ input.addEventListener("keypress", (s) => {
 // navLink.addEventListener("mouseover", (event) => {
 //   event.style.color = "green";
 // });
-
-//drag and drop 3 tane fonksiyon yazmamız gerekiyor
