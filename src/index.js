@@ -13,23 +13,57 @@ window.addEventListener("load", (e) => {
   body.style.background = "red";
 });
 
-//resimlere geldiğinde gri olmasını istiyoruz
-const imges = document.querySelector("img");
-images.forEach((s) => {
+//resimlerin üzerine mouse ile geldiğinde gri olmasını istiyoruz
+//bunu  .filter= grayscale(x%)  ile yapıyoruz.
+const imges = document.querySelectorAll("img");
+imges.forEach((s) => {
   s.addEventListener("mouseover", (event) => {
     s.style.filter = "grayscale(100%)";
   });
-  //resimleri click ettiğimizde grayscale 0 olsun
-  //   s.addEventListener("mouseleave", (event) => {
-  //     s.style.filter = "unset";
-  //   });
+  //click yaptığımızda normal rengine dönsün
+  s.addEventListener("mouseleave", (event) => {
+    s.style.filter = null; //null yerine "unset" ' de yazabiliriz
+  });
 });
 
 //focus input için tıkladığımızda borderı kırmızı olsun istiyoruz
 
 let input = document.getElementById("input");
 input.addEventListener("focus", (e) => {
-  e.target.style.border = "1px solid red";
+  e.target.style.border = "5px solid blue";
+  // sadece e.style verseydik bize event objesini(bir sürü özelliği var)veriyor verirdi e. target(sadece kendisini veriyor) ile bize sadece focus olan elementi alıyoruz
+});
+input.addEventListener("blur", (e) => {
+  e.target.style.border = null;
+});
+
+//window a blur ekle
+//blur başka sayfalara geçiş yapıldığında kullanılır online eğitimde başka bir sayfaya geçiş yapıldığında kullanılabilir
+
+window.addEventListener("blur", (e) => {
+  document.querySelector("body").style.backgroundColor = "red";
+});
+
+window.addEventListener("focus", () => {
+  document.querySelector("body").style.backgroundColor = "white";
+});
+//resize kullanıcaz resize ın genişliğini input içerisine yazdırıcaz burda
+
+window.addEventListener("resize", () => {
+  input.value = `${window.innerWidth} x ${window.innerHeight}`;
+  if (window.innerWidth < 650) {
+    document.querySelector("body").style.backgroundColor = "red";
+  } else {
+    document.querySelector("body").style.backgroundColor = null;
+  }
+});
+
+input.addEventListener("keypress", (s) => {
+  // console.log(s.key);
+  // console.log(s.code);
+  if (s.key == 1) {
+    input.style.border = "10px solid yellow";
+  }
 });
 
 // h1 için
