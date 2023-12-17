@@ -1,101 +1,105 @@
 import "./less/index.less";
 
 // Örnek bir event kullanımı aşağıdadır. Çalıştırmak için comment dışına alın
-// document.querySelector("h1").addEventListener("click",function(e){
-// alert("Bana tıkladın!")
-// });
+document.querySelector("h1").addEventListener("click", function (e) {
+  alert("Bana tıkladın!");
+});
 
 // Kodlar buraya gelecek!
 
-//load sayfa yüklendiğinde renk değiştir
-const body = document.querySelector("body");
-window.addEventListener("load", (e) => {
-  body.style.background = "red";
-});
+//Sayfa yüklendiğinde body nin arka planını kırmızı yap
+// const body = document.querySelector("body");
+// window.addEventListener("load", (e) => {
+//   body.style.background = "red";
+// });
 
-//resimlerin üzerine mouse ile geldiğinde gri olmasını istiyoruz
-//bunu  .filter= grayscale(x%)  ile yapıyoruz.
-const imges = document.querySelectorAll("img");
-imges.forEach((s) => {
-  s.addEventListener("mouseover", (event) => {
+//image larının üstğne geldiğimde gri olucak bunu filter la yaptık
+const imgS = document.querySelectorAll("img");
+imgS.forEach((s) => {
+  s.addEventListener("mouseover", (e) => {
     s.style.filter = "grayscale(100%)";
   });
-  //click yaptığımızda normal rengine dönsün
-  s.addEventListener("mouseleave", (event) => {
-    s.style.filter = null; //null yerine "unset" ' de yazabiliriz
+  s.addEventListener("mouseleave", (e) => {
+    // s.style.filter = "grayscale(0)";burda yine filter yaptık değeri 0 olan aşağıdaki daha sağlıklı
+    s.style.filter = "unset";
   });
 });
 
-//focus input için tıkladığımızda borderı kırmızı olsun istiyoruz
+//focus ve blur bir input ekledik buna focus olunduğunda border kırmızı olsun
 
-let input = document.getElementById("input");
+let input = document.getElementById("input-1");
 input.addEventListener("focus", (e) => {
-  e.target.style.border = "5px solid blue";
-  // sadece e.style verseydik bize event objesini(bir sürü özelliği var)veriyor verirdi e. target(sadece kendisini veriyor) ile bize sadece focus olan elementi alıyoruz
+  e.target.style.border = "11px solid red";
 });
 input.addEventListener("blur", (e) => {
   e.target.style.border = null;
 });
 
-//window a blur ekle
-//blur başka sayfalara geçiş yapıldığında kullanılır online eğitimde başka bir sayfaya geçiş yapıldığında kullanılabilir
-
+// bu işlem sayfadan focusumuzu aldığımız zaman o sayfanın haberi oluyor
+//online eğitimlerde sayfadan ayrılma işlemi olmaması için kullanılır
 window.addEventListener("blur", (e) => {
-  document.querySelector("body").style.backgroundColor = "red";
+  document.querySelector("body").style.backgroundColor = "grey";
 });
-
-window.addEventListener("focus", () => {
+window.addEventListener("focus", (e) => {
   document.querySelector("body").style.backgroundColor = "white";
 });
-//resize kullanıcaz resize ın genişliğini input içerisine yazdırıcaz burda
+
+// resize kullan window'un genişliğini input alanının içine yazdır innerWidth ve innerHeigth ile yapıyoruz
 
 window.addEventListener("resize", () => {
-  input.value = `${window.innerWidth} x ${window.innerHeight}`;
-  if (window.innerWidth < 650) {
+  // input.value = innerWidth;
+  input.value = `${window.innerWidth}X${window.innerHeight}`;
+});
+
+//genişlik 600 ün altına indiğinde
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth < 600) {
     document.querySelector("body").style.backgroundColor = "red";
   } else {
     document.querySelector("body").style.backgroundColor = null;
   }
 });
 
-//keypress kullanıldı 1 rakamı kullanıldığında inputun border rengini sarıya çeviriyor
-//key ve code(digit1 gibi) kullanılabilir .
-input.addEventListener("keypress", (s) => {
-  // console.log(s.key);
-  // console.log(s.code);
-  if (s.key == 1) {
-    input.style.border = "10px solid yellow";
+//input alanında 1 e tuşladığımızda body green olsun
+
+input.addEventListener("keydown", (e) => {
+  console.log(e.key);
+  console.log(e.code);
+  if (e.key == 1) {
+    input.style.border = "10px grey solid ";
   }
 });
 
-//drag and drop 3 tane fonksiyon yazmamız gerekiyor
-const img2 = document.getElementById("img2");
-img2.addEventListener("dragstart", (ev) => {
-  ev.dataTransfer.setData("text", ev.target.id);
-});
+//drag % drop
+// const img1 = document.getElementById("img1");
+// img1.addEventListener("dragstart", (e) => {
+//   e.dataTransfer.setData("Text", e.target.src);
+// });
+
+// const img2 = document.getElementById("img2");
+// img2.addEventListener("drop", (e) => {
+//   var data = e.dataTransfer.getData("text");
+//   e.target.src = data;
+//   e.preventDefault();
+// });
+
+// img2.addEventListener("dragover", (e) => {
+//   e.preventDefault();
+// });
 
 const img1 = document.getElementById("img1");
-img1.addEventListener("drop", (ev) => {
-  let data = ev.dataTransfer.getData("Text");
-  ev.target.src = document.getElementById(data).src;
-  ev.preventDefault();
+img1.addEventListener("dragstart", (e) => {
+  e.dataTransfer.setData("Text", e.target.id);
 });
 
-img1.addEventListener("dragover", (ev) => {
-  ev.preventDefault();
+const p = document.getElementById("p1");
+p.addEventListener("drop", (e) => {
+  var data = e.dataTransfer.getData("Text");
+  e.target.appendChild(document.getElementById(data));
+  e.preventDefault();
 });
 
-// h1 için
-// document
-//   .querySelector(".logo-heading")
-//   .addEventListener("mouseover", mouseOver);
-// function mouseOver() {
-//   document.querySelectorAll("logo-heading").style.color = "yellow";
-// }
-
-//nav ler için  mouseover
-
-// const navLink = document.querySelectorAll(".nav-Link");
-// navLink.addEventListener("mouseover", (event) => {
-//   event.style.color = "green";
-// });
+p.addEventListener("dragover", (e) => {
+  e.preventDefault();
+});
